@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LIS Input</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+</head>
+<body class="bg-slate-900 flex items-center justify-center content-center h-screen text-white">
+    <div class="flex flex-col h-[50vh] items-center justify-center transition-bg fixed z-0 w-full -top-40">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="jumbo absolute -inset-[10px] opacity-30"></div>
+        </div>  
+    </div>
+    <div class="flex mx-auto w-3/4">
+        <div class="max-w-xl">
+            <div class="max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-8 mb-8">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-slate-300">Longest Increasing Subsequence</h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Maximum sequence of elements that continuously increases within an array</p>
+        
+                <form method="POST" action="/lis" class="flex gap-3">
+                    <input type="text" id="input_array" name="input_array" placeholder="Enter numbers separated by commas" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <button type="submit" value="Find LIS" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Solution
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        
+            <div class="max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-8">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-slate-300">Knight's Tour Problem</h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Chess problem where a knight must traverse the chessboard, visiting each square exactly once</p>
+        
+                <form method="POST" action="/knight_tour" class="flex gap-3">
+                    <input type="text" id="start_position" name="start_position" placeholder="Enter position in the format 'row,col'" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <button type="submit" value="Calculate Tour" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Solution
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="max-w-xl mx-auto w-full">
+            <h2 class="mb-4 font-bold leading-none tracking-tight text-4xl text-slate-300">Prakitkum Teori Graph - Group 11</h1>
+            <div id="accordion-flush" data-accordion="collapse" data-active-classes="text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400" class="w-full">
+                <h2 id="accordion-flush-heading-1">
+                  <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="false" aria-controls="accordion-flush-body-1">
+                    <span>How to use</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
+                  </button>
+                </h2>
+                <div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
+                  <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                    <p class="text-gray-500 dark:text-gray-400 text-sm font-bold">For LIS <span class="text-green-500"> (Longest Increasing Subsequence)</span></p>
+                    <p class="mb-2 text-gray-500 dark:text-gray-400 text-sm">Input numbers separated by commas <span class="text-blue-500"> (e.g. 1,2,3,4,5)</span></p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm font-bold">For Knight's Tour Problem <span class="text-green-500"> (Chess 8x8)</span></p>
+                    <p class="mb-2 text-gray-500 dark:text-gray-400 text-sm">Input position in the format <span class="text-blue-500">'row,col'</span></p>
+                  </div>
+                </div>
+                <h2 id="accordion-flush-heading-2">
+                  <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
+                    <span>Contributors</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
+                  </button>
+                </h2>
+                <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
+                  <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                    <div class="text-gray-500 dark:text-gray-400 flex justify-between"><p><span class="text-blue-500">5025211015</span> Muhammad Daffa Ashdaqfillah</p><a href="https://github.com/daf2a" class="text-blue-500 hover:underline">Github Profile</a></div>
+                    <div class="text-gray-500 dark:text-gray-400 flex justify-between"><p><span class="text-blue-500">5025211021</span> Daud Dhiya Rozaan</p><a href="https://github.com/daudhiyaa" class="text-blue-500 hover:underline">Github Profile</a></div>
+                    <div class="text-gray-500 dark:text-gray-400 flex justify-between"><p><span class="text-blue-500">5025211109</span> Dewangga Dika Darmawan</p><a href="https://github.com/ddedida" class="text-blue-500 hover:underline">Github Profile</a></div>
+                  </div>
+                </div>
+                <h2 id="accordion-flush-heading-3">
+                  <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-3" aria-expanded="false" aria-controls="accordion-flush-body-3">
+                    <span>Source Code</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
+                  </button>
+                </h2>
+                <div id="accordion-flush-body-3" class="hidden" aria-labelledby="accordion-flush-heading-3">
+                  <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                    <a href="https://github.com/daf2a/" class="text-blue-500 hover:underline">Github Repository</a>
+                  </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!-- knights_tour.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knight's Tour Result</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  </head>
+  <body class="bg-slate-900 flex items-center justify-center h-screen">
+    <div class="flex flex-col h-[50vh] items-center justify-center transition-bg fixed z-0 w-full -top-40">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="jumbo absolute -inset-[10px] opacity-30"></div>
+        </div>  
+    </div>
+
+    <div>
+        <div
+        class="border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700 px-7 py-5 w-[26rem] rounded-xl mb-4"
+      >
+        <h1 class="text-xl text-slate-300 text-center mb-3 font-bold">Knigts Tour Result</h1>
+        <div class="flex items-center justify-center">
+          <div id="gallery" class="relative w-[330px]" data-carousel="slide">
+            <div class="relative overflow-hidden rounded-lg h-[410px]">
+              {% for step in result %}
+              <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <div
+                  class="flex items-center justify-center content-center bg-gray-400 rounded-lg"
+                >
+                  <table
+                    class="w-40 text-sm text-left rtl:text-right text-blue-100 border border-4 border-gray-400 rounded-lg overflow-hidden"
+                  >
+                    <tbody>
+                      {% for row in step %}
+                      {% set is_even_row = loop.index is even %}
+                      <tr>
+                        {% for cell in row %}
+                          {% set bg_color = '' %}
+                          {% if cell == 1 %} 
+                              {% set bg_color = 'bg-blue-700' %} 
+                          {% elif cell == 2 %} 
+                              {% set bg_color = 'bg-green-500' %} 
+                          {% else %} 
+                              {% set is_even_col = loop.index is even %} 
+                              {% if is_even_row %}
+                                  {% if is_even_col %} 
+                                      {% set bg_color = 'bg-slate-800' %}
+                                  {% else %} 
+                                      {% set bg_color = 'bg-slate-700' %} 
+                                  {% endif %}
+                              {% else %} 
+                                  {% if is_even_col %} 
+                                      {% set bg_color = 'bg-slate-700' %} 
+                                  {% else %} 
+                                      {% set bg_color = 'bg-slate-800' %} 
+                                  {% endif %} 
+                              {% endif %} 
+                          {% endif %}
+                          {% if cell == 2 %}
+                                  <td
+                                  class="p-1 text-center border border-gray-400 {{ bg_color }} text-white/0"
+                              >
+                                      <svg width="30px" height="30px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">id=&quot;defs4976&quot; /&gt;<path fill="#083619" d="M60.81 476.91h300v-60h-300v60zm233.79-347.3l13.94 7.39c31.88-43.62 61.34-31.85 61.34-31.85l-21.62 53 35.64 19 2.87 33 64.42 108.75-43.55 29.37s-26.82-36.39-39.65-43.66c-10.66-6-41.22-10.25-56.17-12l-67.54-76.91-12 10.56 37.15 42.31c-.13.18-.25.37-.38.57-35.78 58.17 23 105.69 68.49 131.78H84.14C93 85 294.6 129.61 294.6 129.61z"/></svg>
+                                  </td>
+                          {% else %}
+                                  <td
+                                  class="px-4 py-3 text-center border border-gray-400 {{ bg_color }} text-white/0"
+                              >
+                                      {{ cell }}
+                                  </td>
+                          {% endif %}
+                          </td>
+                        {% endfor %}
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500 text-white mt-3">Step {{ loop.index }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            <button
+              type="button"
+              class="absolute top-0 end-0 z-30 flex items-end justify-end pr-14 h-full cursor-pointer group focus:outline-none"
+              data-carousel-prev
+            >
+              <span
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none"
+              >
+                <svg
+                  class="w-4 h-4 text-white rtl:rotate-180"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 6 10"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 1 1 5l4 4"
+                  />
+                </svg>
+                <span class="sr-only">Previous</span>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="absolute top-0 end-0 z-30 flex items-end justify-end pr-2 h-full cursor-pointer group focus:outline-none"
+              data-carousel-next
+            >
+              <span
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none"
+              >
+                <svg
+                  class="w-4 h-4 text-white rtl:rotate-180"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 6 10"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 9 4-4-4-4"
+                  />
+                </svg>
+                <span class="sr-only">Next</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <a href="/" class="block w-full text-center items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Back to Homepage
+      </a>
+    </div>
+  </body>
+</html>
