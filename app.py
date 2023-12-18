@@ -102,3 +102,6 @@ def knight_tour():
     result = algorithm(board, pos[0], pos[1])
 
     return render_template('knightstour.html', result=result)
+
+if __name__ == '__main__':
+    app.run(debug=False, host='0.0.0.0')
