@@ -19,11 +19,17 @@
   ```
 
 ## Screenshot
+
 ### Main Menu
   ![main](static/img/home.gif)</br>
+
 ### Largest Increasing Subsequence
   ![main](static/img/lis.gif)</br>
-### Knigth's Open Tour
+
+### Knigth's Open Tour 
+  from last visited node, knight not go back to the starting node</br>
   ![main](static/img/open.gif)</br>
+
 ### Knight's Close Tour
+  from last visited node, knight can go back to the starting node</br>
   ![main](static/img/closed.gif)</br>
