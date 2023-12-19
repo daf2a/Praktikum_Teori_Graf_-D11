@@ -19,9 +19,11 @@
   ```
 
 ## Screenshot
-- Main Menu
-  ![main](static/img/image.png)</br>
-- Largest Increasing Subsequence
-  ![lis](static/img/image-1.png)</br>
-- Knigth's Tour
-  ![kt](static/img/knight.gif)</br>
+### Main Menu
+  ![main](static/img/home.gif)</br>
+### Largest Increasing Subsequence
+  ![main](static/img/lis.gif)</br>
+### Knigth's Open Tour
+  ![main](static/img/open.gif)</br>
+### Knight's Close Tour
+  ![main](static/img/closed.gif)</br>
