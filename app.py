@@ -57,6 +57,8 @@ def algorithmOpenTour(board: List[List[int]], krow: int, kcol: int) -> List[List
 
     result_steps = []
     result_summary = []
+    first_row = krow
+    first_col = kcol
 
     board[krow][kcol] = 2
     result_steps.append(copy.deepcopy(board))
@@ -64,6 +66,7 @@ def algorithmOpenTour(board: List[List[int]], krow: int, kcol: int) -> List[List
     
     for _ in range(64):
         board[krow][kcol] = 1
+        board[first_row][first_col] = 3
         pq: List[Tuple[int, int]] = [] 
 
         for i in range(8):
@@ -91,6 +94,10 @@ def algorithmOpenTour(board: List[List[int]], krow: int, kcol: int) -> List[List
             board[krow][kcol] = 1
             result_steps.append(copy.deepcopy(board))
 
+    board[krow][kcol] = 4
+    result_steps.pop()
+    result_steps.pop()
+    result_steps.append(copy.deepcopy(board))
     return result_steps, result_summary
 
 class Cell:
@@ -105,6 +112,9 @@ def algorithmClosedTour(board: List[List[int]], krow: int, kcol: int) -> List[Li
 
     result_steps = []
     result_summary = []
+
+    first_row = krow
+    first_col = kcol
 
     def limits(x, y):
         return ((x >= 0 and y >= 0) and (x < N and y < N))
@@ -187,12 +197,24 @@ def create_board(steps):
     board_size = 8
     result_boards = []
 
+    first_row = steps[0][1]
+    first_col = steps[0][2]
+
+    last_row = steps[-1][1]
+    last_col = steps[-1][2]
+
     for step in steps:
         board = [[0 for _ in range(board_size)] for _ in range(board_size)]
         for s in steps[:steps.index(step) + 1]:
             board[s[1]][s[2]] = 1 if s != step else 2
-        result_boards.append(board)
+            if s != step:
+                board[first_row][first_col] = 3
+
+        result_boards.append(copy.deepcopy(board))
     
+    board[last_row][last_col] = 1
+    board[first_row][first_col] = 4
+    result_boards.append(copy.deepcopy(board))
     return result_boards
 
 @app.route('/knight_tour', methods=['GET', 'POST'])

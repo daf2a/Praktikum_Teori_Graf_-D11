@@ -45,6 +45,10 @@
                               {% set bg_color = 'bg-blue-700' %} 
                           {% elif cell == 2 %} 
                               {% set bg_color = 'bg-green-500' %} 
+                          {% elif cell == 3 %} 
+                              {% set bg_color = 'bg-purple-500' %} 
+                          {% elif cell == 4 %} 
+                              {% set bg_color = 'bg-orange-500' %} 
                           {% else %} 
                               {% set is_even_col = loop.index is even %} 
                               {% if is_even_row %}
@@ -61,7 +65,8 @@
                                   {% endif %} 
                               {% endif %} 
                           {% endif %}
-                          {% if cell == 2 %}
+
+                          {% if cell == 2 or cell == 4 %}
                                   <td
                                   class="p-1 text-center border border-gray-400 {{ bg_color }} text-white/0"
                               >
