@@ -50,14 +50,16 @@ def lis_route():
         
     return render_template('lis.html', lis_length=lis_length, lis_elements=lis_elements)
 
-def algorithm(board: List[List[int]], krow: int, kcol: int) -> List[List[int]]:
+def algorithmOpenTour(board: List[List[int]], krow: int, kcol: int) -> List[List[int]]:
     dx: List[int] = [1, 2, 2, 1, -1, -2, -2, -1]
     dy: List[int] = [-2, -1, 1, 2, 2, 1, -1, -2]
 
     result_steps = []
+    result_summary = []
 
     board[krow][kcol] = 2
     result_steps.append(copy.deepcopy(board))
+    result_summary.append((krow, kcol))
     
     for _ in range(64):
         board[krow][kcol] = 1
@@ -83,15 +85,20 @@ def algorithm(board: List[List[int]], krow: int, kcol: int) -> List[List[int]]:
             kcol += dy[m]
             board[krow][kcol] = 2
             result_steps.append(copy.deepcopy(board))
+            result_summary.append((krow, kcol))
         else:
             board[krow][kcol] = 1
             result_steps.append(copy.deepcopy(board))
 
-    return result_steps
+    return result_steps, result_summary
+
+# def algorithmClosedTour 
 
 @app.route('/knight_tour', methods=['GET', 'POST'])
 def knight_tour():
     start_position = request.form['start_position']
+    #open tour 0 closed tour 1
+    tour_type = request.form['tour_type']
 
     if not validate(start_position):
         return "Invalid input. Please enter position in the format 'row,col'."
@@ -99,9 +106,14 @@ def knight_tour():
     board: List[List[int]] = [[0] * 8 for _ in range(8)]
 
     pos: List[int] = list(map(int, start_position.split(',')))
-    result = algorithm(board, pos[0], pos[1])
 
-    return render_template('knightstour.html', result=result)
+    if tour_type == '0':
+        result, summary = algorithmOpenTour(board, pos[0], pos[1])
+    else:
+        # ganti algoritma closed tour
+        result, summary = algorithmOpenTour(board, pos[0], pos[1])
+
+    return render_template('knightstour.html', result=result, summary=summary, tour_type=tour_type)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
