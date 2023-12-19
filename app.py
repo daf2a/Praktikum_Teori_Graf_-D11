@@ -9,6 +9,7 @@ import copy
 from typing import List, Tuple
 from utils.input import print_dummy_board, clear, validate
 from utils.board import print_board, update_board
+import random
 
 app = Flask(__name__)
 
@@ -92,11 +93,112 @@ def algorithmOpenTour(board: List[List[int]], krow: int, kcol: int) -> List[List
 
     return result_steps, result_summary
 
-# def algorithmClosedTour 
+class Cell:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
+def algorithmClosedTour(board: List[List[int]], krow: int, kcol: int) -> List[List[int]]:
+    N = 8
+    cx = [1, 1, 2, 2, -1, -1, -2, -2]
+    cy = [2, -2, 1, -1, 2, -2, 1, -1]
+
+    result_steps = []
+    result_summary = []
+
+    def limits(x, y):
+        return ((x >= 0 and y >= 0) and (x < N and y < N))
+
+    def isempty(a, x, y):
+        return (limits(x, y)) and (a[y * N + x] < 0)
+
+    def getDegree(a, x, y):
+        count = 0
+        for i in range(N):
+            if isempty(a, (x + cx[i]), (y + cy[i])):
+                count += 1
+        return count
+
+    def nextMove(a, cell):
+        min_deg_idx = -1
+        c = 0
+        min_deg = (N + 1)
+        nx = 0
+        ny = 0
+
+        start = random.randint(0, 1000) % N
+        for count in range(0, N):
+            i = (start + count) % N
+            nx = cell.x + cx[i]
+            ny = cell.y + cy[i]
+            c = getDegree(a, nx, ny)
+            if ((isempty(a, nx, ny)) and c < min_deg):
+                min_deg_idx = i
+                min_deg = c
+
+        if (min_deg_idx == -1):
+            return None
+
+        nx = cell.x + cx[min_deg_idx]
+        ny = cell.y + cy[min_deg_idx]
+
+        a[ny * N + nx] = a[(cell.y) * N + (cell.x)] + 1
+
+        cell.x = nx
+        cell.y = ny
+
+        return cell
+
+    def printA(a):
+        for i in range(N):
+            for j in range(N):
+                result_summary.append((a[j * N + i], j, i))
+
+    def neighbour(x, y, xx, yy):
+        for i in range(N):
+            if ((x + cx[i]) == xx) and ((y + cy[i]) == yy):
+                return True
+        return False
+
+    def findClosedTour():
+        a = [-1] * N * N
+
+        cell = Cell(kcol, krow)
+
+        a[cell.y * N + cell.x] = 1
+
+        ret = None
+        for i in range(N * N - 1):
+            ret = nextMove(a, cell)
+            if ret == None:
+                return False
+
+        if not neighbour(ret.x, ret.y, kcol, krow):
+            return False
+        printA(a)
+        return True
+
+    while not findClosedTour():
+        pass
+
+    return result_summary
+
+def create_board(steps):
+    board_size = 8
+    result_boards = []
+
+    for step in steps:
+        board = [[0 for _ in range(board_size)] for _ in range(board_size)]
+        for s in steps[:steps.index(step) + 1]:
+            board[s[1]][s[2]] = 1 if s != step else 2
+        result_boards.append(board)
+    
+    return result_boards
 
 @app.route('/knight_tour', methods=['GET', 'POST'])
 def knight_tour():
     start_position = request.form['start_position']
+
     #open tour 0 closed tour 1
     tour_type = request.form['tour_type']
 
@@ -110,8 +212,10 @@ def knight_tour():
     if tour_type == '0':
         result, summary = algorithmOpenTour(board, pos[0], pos[1])
     else:
-        # ganti algoritma closed tour
-        result, summary = algorithmOpenTour(board, pos[0], pos[1])
+        steps = algorithmClosedTour(board, pos[0], pos[1])
+        sorted_steps = sorted(steps, key=lambda x: x[0])
+        result = create_board(sorted_steps)
+        summary = [(t[1], t[2]) for t in sorted_steps]
 
     return render_template('knightstour.html', result=result, summary=summary, tour_type=tour_type)
 
