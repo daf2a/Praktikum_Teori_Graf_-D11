@@ -24,12 +24,13 @@
   ![main](static/img/home.gif)</br>
 
 ### Largest Increasing Subsequence
+  Largest Increasing Subsequence find the longest path in the graph</br>
   ![main](static/img/lis.gif)</br>
 
 ### Knigth's Open Tour 
-  from last visited node, knight not go back to the starting node</br>
+  From last visited node, knight not go back to the starting node</br>
   ![main](static/img/open.gif)</br>
 
 ### Knight's Close Tour
-  from last visited node, knight can go back to the starting node</br>
+  From last visited node, knight go back to the starting node</br>
   ![main](static/img/closed.gif)</br>
