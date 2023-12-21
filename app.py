@@ -7,8 +7,6 @@ import curses
 import heapq
 import copy
 from typing import List, Tuple
-from utils.input import print_dummy_board, clear, validate
-from utils.board import print_board, update_board
 import random
 
 app = Flask(__name__)
@@ -51,61 +49,12 @@ def lis_route():
         
     return render_template('lis.html', lis_length=lis_length, lis_elements=lis_elements)
 
-def algorithmOpenTour(board: List[List[int]], krow: int, kcol: int) -> List[List[int]]:
-    dx: List[int] = [1, 2, 2, 1, -1, -2, -2, -1]
-    dy: List[int] = [-2, -1, 1, 2, 2, 1, -1, -2]
-
-    result_steps = []
-    result_summary = []
-    first_row = krow
-    first_col = kcol
-
-    board[krow][kcol] = 2
-    result_steps.append(copy.deepcopy(board))
-    result_summary.append((krow, kcol))
-    
-    for _ in range(64):
-        board[krow][kcol] = 1
-        board[first_row][first_col] = 3
-        pq: List[Tuple[int, int]] = [] 
-
-        for i in range(8):
-            nrow: int = krow + dx[i]
-            ncol: int = kcol + dy[i]
-
-            if 0 <= nrow <= 7 and 0 <= ncol <= 7 and board[nrow][ncol] == 0:
-                count = 0
-                for j in range(8):
-                    nnrow: int = nrow + dx[j]
-                    nncol: int = ncol + dy[j]
-
-                    if 0 <= nnrow <= 7 and 0 <= nncol <= 7 and board[nnrow][nncol] == 0:
-                        count += 1
-                heapq.heappush(pq, (count, i))
-
-        if len(pq) > 0:
-            (p, m) = heapq.heappop(pq)
-            krow += dx[m]
-            kcol += dy[m]
-            board[krow][kcol] = 2
-            result_steps.append(copy.deepcopy(board))
-            result_summary.append((krow, kcol))
-        else:
-            board[krow][kcol] = 1
-            result_steps.append(copy.deepcopy(board))
-
-    board[krow][kcol] = 4
-    result_steps.pop()
-    result_steps.pop()
-    result_steps.append(copy.deepcopy(board))
-    return result_steps, result_summary
-
 class Cell:
     def __init__(self, x, y):
         self.x = x
         self.y = y
         
-def algorithmClosedTour(board: List[List[int]], krow: int, kcol: int) -> List[List[int]]:
+def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> List[List[int]]:
     N = 8
     cx = [1, 1, 2, 2, -1, -1, -2, -2]
     cy = [2, -2, 1, -1, 2, -2, 1, -1]
@@ -159,7 +108,7 @@ def algorithmClosedTour(board: List[List[int]], krow: int, kcol: int) -> List[Li
 
         return cell
 
-    def printA(a):
+    def boardSummary(a):
         for i in range(N):
             for j in range(N):
                 result_summary.append((a[j * N + i], j, i))
@@ -183,17 +132,19 @@ def algorithmClosedTour(board: List[List[int]], krow: int, kcol: int) -> List[Li
             if ret == None:
                 return False
 
-        if not neighbour(ret.x, ret.y, kcol, krow):
-            return False
-        printA(a)
+        if(isClosed):
+            if not neighbour(ret.x, ret.y, kcol, krow):
+                return False
+        boardSummary(a)
         return True
 
+    
     while not findClosedTour():
         pass
 
     return result_summary
 
-def create_board(steps):
+def create_board(steps, isClosed):
     board_size = 8
     result_boards = []
 
@@ -212,31 +163,34 @@ def create_board(steps):
 
         result_boards.append(copy.deepcopy(board))
     
-    board[last_row][last_col] = 1
-    board[first_row][first_col] = 4
-    result_boards.append(copy.deepcopy(board))
+    if(isClosed):
+        board[last_row][last_col] = 1
+        board[first_row][first_col] = 4
+        result_boards.append(copy.deepcopy(board))
+    else:
+        result_boards.pop()
+        board[last_row][last_col] = 4
+        result_boards.append(copy.deepcopy(board))
     return result_boards
 
 @app.route('/knight_tour', methods=['GET', 'POST'])
 def knight_tour():
     start_position = request.form['start_position']
 
-    #open tour 0 closed tour 1
     tour_type = request.form['tour_type']
-
-    if not validate(start_position):
-        return "Invalid input. Please enter position in the format 'row,col'."
-
     board: List[List[int]] = [[0] * 8 for _ in range(8)]
 
     pos: List[int] = list(map(int, start_position.split(',')))
 
     if tour_type == '0':
-        result, summary = algorithmOpenTour(board, pos[0], pos[1])
-    else:
-        steps = algorithmClosedTour(board, pos[0], pos[1])
+        steps = knightsTour(board, pos[0], pos[1], 0)
         sorted_steps = sorted(steps, key=lambda x: x[0])
-        result = create_board(sorted_steps)
+        result = create_board(sorted_steps, 0)
+        summary = [(t[1], t[2]) for t in sorted_steps]
+    else:
+        steps = knightsTour(board, pos[0], pos[1], 1)
+        sorted_steps = sorted(steps, key=lambda x: x[0])
+        result = create_board(sorted_steps, 1)
         summary = [(t[1], t[2]) for t in sorted_steps]
 
     return render_template('knightstour.html', result=result, summary=summary, tour_type=tour_type)
