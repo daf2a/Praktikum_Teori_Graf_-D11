@@ -119,7 +119,7 @@ def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> 
                 return True
         return False
 
-    def findClosedTour():
+    def findTour():
         a = [-1] * N * N
 
         cell = Cell(kcol, krow)
@@ -139,7 +139,7 @@ def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> 
         return True
 
     
-    while not findClosedTour():
+    while not findTour():
         pass
 
     return result_summary
@@ -187,13 +187,15 @@ def knight_tour():
         sorted_steps = sorted(steps, key=lambda x: x[0])
         result = create_board(sorted_steps, 0)
         summary = [(t[1], t[2]) for t in sorted_steps]
+        summary_board = [(t[0]) for t in steps]
     else:
         steps = knightsTour(board, pos[0], pos[1], 1)
         sorted_steps = sorted(steps, key=lambda x: x[0])
         result = create_board(sorted_steps, 1)
         summary = [(t[1], t[2]) for t in sorted_steps]
+        summary_board = [(t[0]) for t in steps]
 
-    return render_template('knightstour.html', result=result, summary=summary, tour_type=tour_type)
+    return render_template('knightstour.html', result=result, summary=summary, tour_type=tour_type, summary_board=summary_board)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
