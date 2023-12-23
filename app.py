@@ -1,17 +1,13 @@
 from flask import Flask, render_template, request
-import os
-import sys
-from colorama import init, Fore
-from time import sleep
-import curses
-import heapq
 import copy
-from typing import List, Tuple
+from typing import List
 import random
 
 app = Flask(__name__)
 
-def find_lis(arr):
+# -------------------- LARGEST INCREASING SUBSEQUENCE ALGORITHM ------------------------------
+
+def find_lis(arr):# -> tuple[int, list]:
     n = len(arr)
     lis = [1] * n
     previous_indices = [-1] * n 
@@ -33,24 +29,10 @@ def find_lis(arr):
     lis_sequence.reverse()
     return max_length, lis_sequence
 
-@app.route('/', methods=['GET', 'POST'])
-def homepage():
-    return render_template('home.html')
-
-@app.route('/lis', methods=['GET', 'POST'])
-def lis_route():
-    lis_length = None
-    lis_elements = None
-
-    if request.method == 'POST':
-        input_array = request.form.get('input_array')
-        arr = list(map(int, input_array.split(',')))
-        lis_length, lis_elements = find_lis(arr)
-        
-    return render_template('lis.html', lis_length=lis_length, lis_elements=lis_elements)
+# -------------------- KNIGHT'S TOUR ALGORITHM ------------------------------
 
 class Cell:
-    def __init__(self, x, y):
+    def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
         
@@ -59,26 +41,22 @@ def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> 
     cx = [1, 1, 2, 2, -1, -1, -2, -2]
     cy = [2, -2, 1, -1, 2, -2, 1, -1]
 
-    result_steps = []
     result_summary = []
 
-    first_row = krow
-    first_col = kcol
-
-    def limits(x, y):
+    def limits(x, y):# -> Any:
         return ((x >= 0 and y >= 0) and (x < N and y < N))
 
     def isempty(a, x, y):
         return (limits(x, y)) and (a[y * N + x] < 0)
 
-    def getDegree(a, x, y):
+    def getDegree(a, x, y) -> int:
         count = 0
         for i in range(N):
             if isempty(a, (x + cx[i]), (y + cy[i])):
                 count += 1
         return count
 
-    def nextMove(a, cell):
+    def nextMove(a, cell):# -> Any | None:
         min_deg_idx = -1
         c = 0
         min_deg = (N + 1)
@@ -108,18 +86,18 @@ def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> 
 
         return cell
 
-    def boardSummary(a):
+    def boardSummary(a) -> None:
         for i in range(N):
             for j in range(N):
                 result_summary.append((a[j * N + i], j, i))
 
-    def neighbour(x, y, xx, yy):
+    def isTourClosed(x, y, xx, yy) -> bool:
         for i in range(N):
             if ((x + cx[i]) == xx) and ((y + cy[i]) == yy):
                 return True
         return False
 
-    def findTour():
+    def findTour() -> bool:
         a = [-1] * N * N
 
         cell = Cell(kcol, krow)
@@ -133,7 +111,7 @@ def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> 
                 return False
 
         if(isClosed):
-            if not neighbour(ret.x, ret.y, kcol, krow):
+            if not isTourClosed(ret.x, ret.y, kcol, krow):
                 return False
         boardSummary(a)
         return True
@@ -143,6 +121,8 @@ def knightsTour(board: List[List[int]], krow: int, kcol: int, isClosed: int) -> 
         pass
 
     return result_summary
+
+# -------------------- CREATING CHESS BOARD ------------------------------
 
 def create_board(steps, isClosed):
     board_size = 8
@@ -173,8 +153,26 @@ def create_board(steps, isClosed):
         result_boards.append(copy.deepcopy(board))
     return result_boards
 
+# -------------------- RENDERING PAGES ------------------------------
+
+@app.route('/', methods=['GET', 'POST'])
+def homepage() -> str:
+    return render_template('home.html')
+
+@app.route('/lis', methods=['GET', 'POST'])
+def lis_route() -> str:
+    lis_length = None
+    lis_elements = None
+
+    if request.method == 'POST':
+        input_array = request.form.get('input_array')
+        arr = list(map(int, input_array.split(',')))
+        lis_length, lis_elements = find_lis(arr)
+        
+    return render_template('lis.html', lis_length=lis_length, lis_elements=lis_elements)
+
 @app.route('/knight_tour', methods=['GET', 'POST'])
-def knight_tour():
+def knight_tour() -> str:
     start_position = request.form['start_position']
 
     tour_type = request.form['tour_type']
